@@ -70,13 +70,13 @@ function Login() {
             Create New account
           </a>{" "}
         </p>
-        <hr className="my-4"/>
+        {/* <hr className="my-4"/>
         <p className="text-sm text-center ">
          
           <a href="/auth/forget" className=" font-semibold text-blue-500">
             Forget Password
           </a>{" "}
-        </p>
+        </p> */}
       </form>
     </div>
   );

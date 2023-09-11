@@ -198,8 +198,8 @@ function Register() {
             label={"Confirm Password"}
           />
         </div>
-        <div className="flex justify-end mt-8">
-          <button type="submit" disabled={isLoading && upload.isLoading} className="styled-button w-52 ">
+        <div className="flex md:justify-end mt-8">
+          <button type="submit" disabled={isLoading && upload.isLoading} className="styled-button md:w-52  w-full">
             Register
           </button>
         </div>

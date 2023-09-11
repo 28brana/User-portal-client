@@ -1,7 +1,7 @@
 const CustomInput = ({ name, value, onChange, type = "text", label,...others }) => {
   return (
     <div className="w-full">
-      <label htmlFor={name} className="styled-label">
+      <label htmlFor={name} className="styled-label whitespace-nowrap">
         {label}
       </label>
       <input
