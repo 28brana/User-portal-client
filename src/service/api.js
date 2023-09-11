@@ -23,7 +23,6 @@ export const uploadImage = async (imageBase64) => {
   const formData = new FormData();
   formData.append("key", apiKey);
   formData.append("image", imageBase64);
-  formData.append("expiration", "600"); 
 
   const response = await axios.post(
     "https://api.imgbb.com/1/upload",
