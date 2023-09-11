@@ -13,7 +13,7 @@ function EditData() {
   const dispatch=useDispatch();
   const data =useSelector(state=>state.userReducer);
 
-  const { mutate } = useMutation(( value ) => updateUser(value), {
+  const { mutate,isLoading } = useMutation(( value ) => updateUser(value), {
     onSuccess: (data) => {
       toast("Update Successfull", { type: "success" });
       dispatch(registerReducer(data.data.user))
@@ -155,7 +155,7 @@ function EditData() {
           </div>
         </div>
         
-        <button type="submit" className="styled-button w-full ">
+        <button type="submit" disabled={isLoading} className="styled-button w-full ">
           Save
         </button>
       </form>

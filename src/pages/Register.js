@@ -25,7 +25,7 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-  const { mutate } = useMutation(( value ) => register(value), {
+  const { isLoading,mutate } = useMutation(( value ) => register(value), {
     onSuccess: (data) => {
       toast("Register Successfull", { type: "success" });
       dispatch(registerReducer(data.data.user))
@@ -199,7 +199,7 @@ function Register() {
           />
         </div>
         <div className="flex justify-end mt-8">
-          <button type="submit" className="styled-button w-52 ">
+          <button type="submit" disabled={isLoading && upload.isLoading} className="styled-button w-52 ">
             Register
           </button>
         </div>

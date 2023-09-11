@@ -16,11 +16,12 @@ function Dashboard() {
       <Header />
       <div className="container mx-auto max-w-4xl mt-10">
         <div className="flex gap-12 mb-2">
-          <div className="rounded-full bg-slate-400" style={{
+          <div className="rounded-full overflow-hidden bg-slate-400" style={{
             minWidth:'150px',
             height:'150px',
-            background:`url(${data?.profileImage})`
-          }}/>
+          }}>
+            <img src={data?.profileImage} alt="user" className="w-full h-full object-cover"/>
+          </div>
           <div className="w-full">
             <div className="flex mb-2 w-full">
               <CustomDisplay title={"First Name"} subtitle={data?.firstName} />
