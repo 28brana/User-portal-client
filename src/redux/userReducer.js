@@ -11,15 +11,13 @@ const initialState = {
   qualification: "",
   hobbies: [],
   profileImage: null,
-  password: "",
-  confirmPassword: "",
 };
 
 const user = createSlice({
   name: "user",
   initialState,
   reducers: {
-    register(state, action) {
+    registerReducer(state, action) {
       const {
         firstName,
         lastName,
@@ -30,8 +28,7 @@ const user = createSlice({
         qualification,
         hobbies,
         profileImage,
-        password,
-        confirmPassword,
+      
       } = action.payload;
 
       state.firstName = firstName;
@@ -43,13 +40,24 @@ const user = createSlice({
       state.qualification = qualification;
       state.hobbies = hobbies;
       state.profileImage = profileImage;
-      state.password = password;
-      state.confirmPassword = confirmPassword;
+      
+    },
+    logoutReducer(state) {
+      // Clear the user data when logging out
+      state.firstName = "";
+      state.lastName = "";
+      state.email = "";
+      state.contactNo = "";
+      state.dob = "";
+      state.gender = "male";
+      state.qualification = "";
+      state.hobbies = [];
+      state.profileImage = null;
     },
   },
 });
 
-export const { register } = user.actions;
+export const { registerReducer,logoutReducer } = user.actions;
 export default user.reducer;
 
 // export const { loadActualData, setCurrentIndex, setUserEmail, setUserAnswer } =

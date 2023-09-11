@@ -4,20 +4,34 @@ import CustomCheckBox from "../component/CustomCheckBox";
 import CustomRadioButton from "../component/CustomRadioButton";
 import { toast } from "react-toastify";
 import Header from "../component/Header";
+import { useMutation } from "react-query";
+import { updateUser } from "../service/api";
+import { useDispatch, useSelector } from "react-redux";
+import { registerReducer } from "../redux/userReducer";
 
 function EditData() {
+  const dispatch=useDispatch();
+  const data =useSelector(state=>state.userReducer);
+
+  const { mutate } = useMutation(( value ) => updateUser(value), {
+    onSuccess: (data) => {
+      toast("Update Successfull", { type: "success" });
+      dispatch(registerReducer(data.data.user))
+    },
+    onError: (err) => {
+      toast(`${err.response.data.message}`, { type: "error" });
+    },
+  });
+  
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    contactNo: "",
-    dob: "",
-    gender: "male",
-    qualification: "",
-    hobbies: [],
-    profileImage: null,
-    password: "",
-    confirmPassword: "",
+    firstName: data.firstName,
+    lastName: data.lastName,
+    contactNo: data.contactNo,
+    dob: data.dob,
+    email:data.email,
+    gender: data.gender,
+    qualification: data.qualification,
+    hobbies: data.hobbies,   
   });
 
   const handleChange = (e) => {
@@ -36,15 +50,17 @@ function EditData() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast("Submit", { type: "success" });
     console.log(formData);
+    mutate(formData)
   };
 
   return (
     <div>
-            <Header/>
-
-      <form onSubmit={handleSubmit} className="container mx-auto max-w-4xl mt-10">
+      <Header />
+      <form
+        onSubmit={handleSubmit}
+        className="container mx-auto max-w-4xl mt-10"
+      >
         <div className="flex gap-4 mb-4">
           <CustomInput
             name={"firstName"}
@@ -66,6 +82,7 @@ function EditData() {
             value={formData.email}
             onChange={handleChange}
             label={"Email"}
+            disabled
           />
           <CustomInput
             name={"contactNo"}
@@ -137,19 +154,7 @@ function EditData() {
             </div>
           </div>
         </div>
-        <div className="mb-4">
-          <label htmlFor="profileImage" className="styled-label">
-            Profile Image
-          </label>
-          <input
-            type="file"
-            id="profileImage"
-            name="profileImage"
-            accept="image/*"
-            onChange={handleChange}
-            className="styled-input"
-          />
-        </div>
+        
         <button type="submit" className="styled-button w-full ">
           Save
         </button>

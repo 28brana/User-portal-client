@@ -1,7 +1,26 @@
 import React, { useState } from "react";
 import CustomInput from "../component/CustomInput";
+import { useMutation } from "react-query";
+import { toast } from "react-toastify";
+import { login } from "../service/api";
+import { registerReducer } from "../redux/userReducer";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navagation = useNavigate();
+  const dispatch=useDispatch();
+  const { mutate } = useMutation(( value ) => login(value), {
+    onSuccess: (data) => {
+      toast("Login Successfull", { type: "success" });
+      dispatch(registerReducer(data.data.user))
+      navagation('/');
+    },
+    onError: (err) => {
+      console.log(err.response.data.message)
+      toast(`${err.response.data.message}`, { type: "error" });
+    },
+  });
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,6 +34,8 @@ function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    
+    mutate(formData)
   };
 
   return (

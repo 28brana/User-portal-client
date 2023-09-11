@@ -1,11 +1,26 @@
 import React, { useState } from "react";
+import { useMutation } from "react-query";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import CustomInput from "../component/CustomInput";
 import Header from "../component/Header";
+import { changePassword } from "../service/api";
 
 function ChangePassword() {
+  const data = useSelector((state) => state.userReducer);
+
+  const { mutate, isLoading } = useMutation((value) => changePassword(value), {
+    onSuccess: () => {
+      toast("Update Successfull", { type: "success" });
+    },
+    onError: (err) => {
+      toast(`${err.response.data.message}`, { type: "error" });
+    },
+  });
   const [formData, setFormData] = useState({
-    password: "",
-    confirmPassword: "",
+    email: data.email,
+    oldPassword: "",
+    newPassword: "",
   });
 
   const handleChange = (e) => {
@@ -15,8 +30,7 @@ function ChangePassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission here (e.g., send data to the server)
-    console.log(formData);
+    mutate(formData);
   };
 
   return (
@@ -26,22 +40,26 @@ function ChangePassword() {
         onSubmit={handleSubmit}
         className="container mx-auto max-w-4xl mt-10"
       >
-        <div className=" mb-4">
+        <div className="mb-4">
           <CustomInput
-            name={"password"}
-            value={formData.password}
+            name={"oldPassword"}
+            value={formData.oldPassword}
             onChange={handleChange}
-            label={"password"}
+            label={"Old Password"}
           />
           <CustomInput
-            name={"confirmPassword"}
-            value={formData.confirmPassword}
+            name={"newPassword"}
+            value={formData.newPassword}
             onChange={handleChange}
-            label={"confirmPassword"}
+            label={"New Password"}
           />
         </div>
 
-        <button type="submit" className="styled-button w-full mb-4">
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="styled-button w-full mb-4"
+        >
           Change Password
         </button>
       </form>

@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../component/Header";
+import { useSelector } from "react-redux";
 const CustomDisplay = ({ title, subtitle }) => {
   return (
     <div className="w-full">
@@ -9,6 +10,7 @@ const CustomDisplay = ({ title, subtitle }) => {
   );
 };
 function Dashboard() {
+  const data =useSelector(state=>state.userReducer);
   return (
     <div className="">
       <Header />
@@ -16,24 +18,25 @@ function Dashboard() {
         <div className="flex gap-12 mb-2">
           <div className="rounded-full bg-slate-400" style={{
             minWidth:'150px',
-            height:'150px'
+            height:'150px',
+            background:`url(${data?.profileImage})`
           }}/>
           <div className="w-full">
             <div className="flex mb-2 w-full">
-              <CustomDisplay title={"First Name"} subtitle={"Bharat"} />
-              <CustomDisplay title={"Last Name"} subtitle={"Rana"} />
+              <CustomDisplay title={"First Name"} subtitle={data?.firstName} />
+              <CustomDisplay title={"Last Name"} subtitle={data?.lastName} />
             </div>
             <div className="flex mb-2 w-full">
-              <CustomDisplay title={"Email"} subtitle={"28brana@gmail.com"} />
-              <CustomDisplay title={"Contact No."} subtitle={"781435671023"} />
+              <CustomDisplay title={"Email"} subtitle={data?.email} />
+              <CustomDisplay title={"Contact No."} subtitle={data?.contactNo} />
             </div>
             <div className="flex mb-2 w-full">
-              <CustomDisplay title={"Dob"} subtitle={"28-Aug-2002"} />
-              <CustomDisplay title={"Gender"} subtitle={"Male"} />
+              <CustomDisplay title={"Dob"} subtitle={data?.dob} />
+              <CustomDisplay title={"Gender"} subtitle={data?.gender} />
             </div>
             <div className="flex mb-2 w-full">
-              <CustomDisplay title={"Qualifications"} subtitle={"Higherst"} />
-              <CustomDisplay title={"Hobbies"} subtitle={"Runnign"} />
+              <CustomDisplay title={"Qualifications"} subtitle={data?.qualification} />
+              <CustomDisplay title={"Hobbies"} subtitle={data?.hobbies} />
             </div>
           </div>
         </div>

@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import CustomInput from "../component/CustomInput";
-import CustomCheckBox from "../component/CustomCheckBox";
-import CustomRadioButton from "../component/CustomRadioButton";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
+import CustomCheckBox from "../component/CustomCheckBox";
+import CustomInput from "../component/CustomInput";
+import CustomRadioButton from "../component/CustomRadioButton";
+import { register, uploadImage } from "../service/api";
+import { useDispatch } from "react-redux";
+import { registerReducer } from "../redux/userReducer";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navagation = useNavigate();
+  const dispatch=useDispatch();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -17,6 +24,27 @@ function Register() {
     profileImage: null,
     password: "",
     confirmPassword: "",
+  });
+  const { mutate } = useMutation(( value ) => register(value), {
+    onSuccess: (data) => {
+      toast("Register Successfull", { type: "success" });
+      dispatch(registerReducer(data.data.user))
+      navagation('/');
+    },
+    onError: (err) => {
+      toast(`${err.response.data.message}`, { type: "error" });
+    },
+  });
+  
+  const upload = useMutation((value) => uploadImage(value), {
+    onSuccess: (data) => {
+      const newData=Object.assign({},formData);
+      newData.profileImage=data.data.display_url
+      mutate(newData)
+    },
+    onError: () => {
+      toast("Upload Image Failed", { type: "error" });
+    },
   });
 
   const handleChange = (e) => {
@@ -35,8 +63,11 @@ function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast('Submit',{type:'success'})
-    console.log(formData);
+    if(formData.password !==formData.confirmPassword){
+      toast("Confirm Password not simiar to password", { type: "error" });
+      return;
+    }
+    upload.mutate(formData.profileImage);
   };
 
   return (
